@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Final Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <style>
+      .container>h3{
+        color:#cea674;
+        font-style:italic;
+      }
+
+      .container>table>tbody>tr>td>img{
+        width: auto;
+        /* Yeap you can change the width and height*/
+        height: 100px;
+      };
+    </style>
+</head>
+
+<body>
+  <script>
+    
+    function goSearch(){
+      //test
+      
+      var title = document.getElementById("search").value;
+      if(title){
+        window.location.href="Search.html?title=" + title;
+      }else{
+        alert("Invalid!");
+      }
+      
+    }
+    
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title');
+    //console.log(title); 
+    
+    var level = document.getElementById("head");
+    head.innerHTML = "Search > " + title;
+    
+    async function getId(title) {
+      const url = 'https://the-vegan-recipes-db.p.rapidapi.com/';
+      const options = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': 'd3f404dcf8msh1617ca8d2c8ab0ep1061f6jsn67b3f9f625d3',
+          'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
+        }
+      };
+      
+      try { 
+        const response = await fetch(url, options);
+        const result = await response.text();
+        const myObj = JSON.parse(result); 
+       // console.log(myObj);    
+        var times = 1;
+
+        for(var i in myObj){
+          if(myObj[i].title.includes(title)){
+            console.log(myObj[i]); 
+            var id = myObj[i].id;
+           // getData(id);
+            
+            //creat Elements
+            var element = document.getElementById("tableEle");
+            
+            var tr = document.createElement("tr");
+            //var node = docuemnt.creatTextnode("Test!!!");
+            
+            var td0 = document.createElement("td");
+            var img = document.createElement("img");
+            img.id = "picture"+times;
+            img.classList.add("rounded-circle");
+            img.classList.add("img-fluid");
+           
+            var td1 = document.createElement("td");
+            td1.id = "id"+times;
+            var td2 = document.createElement("td");
+            td2.id = "title"+times;
+            var td3 = document.createElement("td");
+            td3.id = "difficulty"+times;
+            var td4 = document.createElement("td");
+            td4.id = "details"+times;
+            var a = document.createElement("a");
+
+            //append
+            element.appendChild(tr);
+            tr.appendChild(td0);
+            td0.appendChild(img);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            td4.appendChild(a);
+            //data
+            document.getElementById("id"+times).innerHTML = myObj[i].id;
+            document.getElementById("title"+times).innerHTML = myObj[i].title;
+            document.getElementById("difficulty"+times).innerHTML = myObj[i].difficulty;
+            document.getElementById("picture"+times).src = myObj[i].image;
+            a.setAttribute('href', "Special_Item.html?id="+id);
+            a.innerText = "Reciept";
+
+            times++;
+            console.log(times);
+          }   
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+
+    //call function
+    getId(title);
+};
+
+  </script>
+
+  <!----navbar---->
+<div class = "container">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffff;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href = "Final.html">Vegan Reciepts</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+        aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="Final.html">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Difficulty Level
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+              <li><a class="dropdown-item" href="Difficulty.html?difficulty=Easy">Easy</a></li>
+              <li><a class="dropdown-item" href="Difficulty.html?difficulty=Medium">Medium</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"  id = "search">
+          <button  onclick = "goSearch();" class="btn btn-outline-success" type="button">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<img src = "https://ohsheglows.com/wp-content/themes/foodiepro-v444/images/ornament_long.png">
+
+<br><br>
+<div class = "container">  
+      <h3 id = "head"></h3>
+      <br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Picture</th>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Difficulty  Level</th>
+            <th scope="col">Reciepts</th>
+          </tr>
+        </thead>
+        <tbody id = "tableEle">
+        </tbody>
+      </table>
+
+</div>
+
+</body>
+
+</html>

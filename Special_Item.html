@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Final Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <style>
+      h3{
+        color:#cea674;
+      }
+      
+      h5{
+        color:#73bcce;
+      }
+      .container>.row>.col-9>.table>tbody>tr>td{
+        font-style:italic;
+      }
+    </style>
+</head>
+
+<body>
+  <script>
+    
+    function goSearch(){
+      //test
+      
+      var title = document.getElementById("search").value;
+      if(title){
+        window.location.href="Search.html?title=" + difficulty;
+      }else{
+        alert("Invalid!");
+      }
+      
+    }
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id); 
+
+    async function getData(id) {
+      const url = 'https://the-vegan-recipes-db.p.rapidapi.com/' + id;
+      const options = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': 'd3f404dcf8msh1617ca8d2c8ab0ep1061f6jsn67b3f9f625d3',
+          'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
+        }
+      };
+      
+      try {
+        const response = await fetch(url, options);
+        const result = await response.text();
+        const myObj = JSON.parse(result); 
+        console.log(myObj);    
+
+        //document.getElementById("id").innerHTML = myObj.id;
+        document.getElementById("title").innerHTML = myObj.title;
+        document.getElementById("difficulty").innerHTML = myObj.difficulty;
+        document.getElementById("portion").innerHTML = myObj.portion;
+        document.getElementById("time").innerHTML = myObj.time;
+        document.getElementById("description").innerHTML = myObj.description;
+        document.getElementById("ingredients").innerHTML = myObj.ingredients;
+
+        var str = "";
+        for(var i in  myObj.method){
+          var j =  Number(i) +  Number(1);
+          var num = "Step "+j;
+          str = str + myObj.method[i][num] + "<br>";
+        }
+    
+        document.getElementById("method").innerHTML = str;
+        document.getElementById("picture").src = myObj.image;
+       
+
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+
+    //call function
+    getData(id);
+  };
+
+
+  </script>
+
+  <!----navbar---->
+
+  <div class = "container">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffff;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href = "Final.html">Vegan Reciepts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+          aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="Final.html">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Difficulty Level
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="Difficulty.html?difficulty=Easy">Easy</a></li>
+                <li><a class="dropdown-item" href="Difficulty.html?difficulty=Medium">Medium</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"  id = "search">
+            <button  onclick = "goSearch();" class="btn btn-outline-success" type="button">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+<img src = "https://ohsheglows.com/wp-content/themes/foodiepro-v444/images/ornament_long.png">
+
+<br><br>
+<div class = "container">
+  <div class="row">
+    <div class = "col-3">
+      <img
+      src="#" class="rounded-circle img-fluid" id = "picture"></img>
+    </div>
+    <div class = "col-9">
+      <h3 id = "title"></h3>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Difficulty: </th>
+            <td id = "difficulty"></td>
+          </tr>
+          <tr>
+            <th>Portion: </th>
+            <td id="portion"></td>
+          </tr>
+          <tr>
+            <th>Spend Time: </th>
+            <td id = "time"></td>
+          </tr>
+          <tr>
+            <th>Description: </th>
+            <td id="description"></td>
+          </tr>
+          <tr>
+            <th>Ingredients: </th>
+            <td id = "ingredients"></td>
+          </tr>
+          <tr>
+            <th>Method: </th>
+            <td id="method"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>  
+</div>
+
+</body>
+
+</html>
