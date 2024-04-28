@@ -23,7 +23,7 @@
       const response = await fetch(url, options);
       const result = await response.text();
       const myObj = JSON.parse(result); 
-      //console.log(myObj);
+      console.log(myObj);
 
       for(var i in myObj.facts){
         var index = myObj.facts[i].factId;
