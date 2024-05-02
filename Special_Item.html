@@ -27,15 +27,15 @@
 <body>
   <script>
     
+   
     function goSearch(){
-      //test
+
       var title = document.getElementById("search").value;
       if(title){
-        window.location.href="Search.html?title=" + difficulty;
+        window.location.href="Search.html?title=" + title ;
       }else{
         alert("Invalid!");
       }
-      
     }
   window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
