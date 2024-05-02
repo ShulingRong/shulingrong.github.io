@@ -28,26 +28,33 @@
   <script>
     
     function goSearch(){
-      //test
-      
       var title = document.getElementById("search").value;
       if(title){
         window.location.href="Search.html?title=" + title;
       }else{
         alert("Invalid!");
       }
-      
     }
-    
+
+    function difficulty(difficulty){
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const title = urlParams.get('title');
+      
+      console.log(title);
+      console.log(difficulty);
+      window.location.href="Search.html?title=" + title + "&difficulty=" + difficulty;
+    }
+
   window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const title = urlParams.get('title');
-    //console.log(title); 
+    const difficulty = urlParams.get('difficulty'); 
     
     var level = document.getElementById("head");
     head.innerHTML = "Search > " + title;
     
-    async function getId(title) {
+    async function getId() {
       const url = 'https://the-vegan-recipes-db.p.rapidapi.com/';
       const options = {
         method: 'GET',
@@ -61,67 +68,120 @@
         const response = await fetch(url, options);
         const result = await response.text();
         const myObj = JSON.parse(result); 
-       // console.log(myObj);    
+        console.log(myObj);    
         var times = 1;
 
-        for(var i in myObj){
-          if(myObj[i].title.includes(title)){
-            console.log(myObj[i]); 
-            var id = myObj[i].id;
-           // getData(id);
-            
-            //creat Elements
-            var element = document.getElementById("tableEle");
-            
-            var tr = document.createElement("tr");
-            //var node = docuemnt.creatTextnode("Test!!!");
-            
-            var td0 = document.createElement("td");
-            var img = document.createElement("img");
-            img.id = "picture"+times;
-            img.classList.add("rounded-circle");
-            img.classList.add("img-fluid");
-           
-            var td1 = document.createElement("td");
-            td1.id = "id"+times;
-            var td2 = document.createElement("td");
-            td2.id = "title"+times;
-            var td3 = document.createElement("td");
-            td3.id = "difficulty"+times;
-            var td4 = document.createElement("td");
-            td4.id = "details"+times;
-            var a = document.createElement("a");
-
-            //append
-            element.appendChild(tr);
-            tr.appendChild(td0);
-            td0.appendChild(img);
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            tr.appendChild(td3);
-            tr.appendChild(td4);
-            td4.appendChild(a);
-            //data
-            document.getElementById("id"+times).innerHTML = myObj[i].id;
-            document.getElementById("title"+times).innerHTML = myObj[i].title;
-            document.getElementById("difficulty"+times).innerHTML = myObj[i].difficulty;
-            document.getElementById("picture"+times).src = myObj[i].image;
-            a.setAttribute('href', "Special_Item.html?id="+id);
-            a.innerText = "Reciept";
-
-            times++;
-            console.log(times);
-          }   
+        if(difficulty == null){
+          for(var i in myObj){
+            if(myObj[i].title.includes(title)){
+              console.log(myObj[i]); 
+              var id = myObj[i].id;
+             // getData(id);
+              
+              //creat Elements
+              var element = document.getElementById("tableEle");
+              
+              var tr = document.createElement("tr");
+              //var node = docuemnt.creatTextnode("Test!!!");
+              
+              var td0 = document.createElement("td");
+              var img = document.createElement("img");
+              img.id = "picture"+times;
+              img.classList.add("rounded-circle");
+              img.classList.add("img-fluid");
+             
+              var td1 = document.createElement("td");
+              td1.id = "id"+times;
+              var td2 = document.createElement("td");
+              td2.id = "title"+times;
+              var td3 = document.createElement("td");
+              td3.id = "difficulty"+times;
+              var td4 = document.createElement("td");
+              td4.id = "details"+times;
+              var a = document.createElement("a");
+  
+              //append
+              element.appendChild(tr);
+              tr.appendChild(td0);
+              td0.appendChild(img);
+              tr.appendChild(td1);
+              tr.appendChild(td2);
+              tr.appendChild(td3);
+              tr.appendChild(td4);
+              td4.appendChild(a);
+              //data
+              document.getElementById("id"+times).innerHTML = myObj[i].id;
+              document.getElementById("title"+times).innerHTML = myObj[i].title;
+              document.getElementById("difficulty"+times).innerHTML = myObj[i].difficulty;
+              document.getElementById("picture"+times).src = myObj[i].image;
+              a.setAttribute('href', "Special_Item.html?id="+id);
+              a.innerText = "Reciept";
+  
+              times++;
+              //console.log(times);
+            }   
+          }
+        }else{
+          for(var i in myObj){
+            if(myObj[i].title.includes(title) && myObj[i].difficulty == difficulty){
+              console.log(myObj[i]); 
+              var id = myObj[i].id;
+             // getData(id);
+              
+              //creat Elements
+              var element = document.getElementById("tableEle");
+              
+              var tr = document.createElement("tr");
+              //var node = docuemnt.creatTextnode("Test!!!");
+              
+              var td0 = document.createElement("td");
+              var img = document.createElement("img");
+              img.id = "picture"+times;
+              img.classList.add("rounded-circle");
+              img.classList.add("img-fluid");
+             
+              var td1 = document.createElement("td");
+              td1.id = "id"+times;
+              var td2 = document.createElement("td");
+              td2.id = "title"+times;
+              var td3 = document.createElement("td");
+              td3.id = "difficulty"+times;
+              var td4 = document.createElement("td");
+              td4.id = "details"+times;
+              var a = document.createElement("a");
+  
+              //append
+              element.appendChild(tr);
+              tr.appendChild(td0);
+              td0.appendChild(img);
+              tr.appendChild(td1);
+              tr.appendChild(td2);
+              tr.appendChild(td3);
+              tr.appendChild(td4);
+              td4.appendChild(a);
+              //data
+              document.getElementById("id"+times).innerHTML = myObj[i].id;
+              document.getElementById("title"+times).innerHTML = myObj[i].title;
+              document.getElementById("difficulty"+times).innerHTML = myObj[i].difficulty;
+              document.getElementById("picture"+times).src = myObj[i].image;
+              a.setAttribute('href', "Special_Item.html?id="+id);
+              a.innerText = "Reciept";
+  
+              times++;
+              //console.log(times);
+            }   
+          }
         }
+        
 
       } catch (error) {
         console.error(error);
       }
-
     }
 
     //call function
-    getId(title);
+    getId();
+
 };
 
   </script>
@@ -148,14 +208,11 @@
             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
               <li><a class="dropdown-item" href="Difficulty.html?difficulty=Easy">Easy</a></li>
               <li><a class="dropdown-item" href="Difficulty.html?difficulty=Medium">Medium</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
+            <a class="nav-link active" aria-current="page" href="Favorite.html" id = "account">Hello!</a>
           </li>
         </ul>
         <form class="d-flex">
@@ -172,6 +229,15 @@
 <br><br>
 <div class = "container">  
       <h3 id = "head"></h3>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+          Difficulty
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" >
+          <li><button class="dropdown-item" type="button"  onclick = "difficulty('Easy');">Easy</button></li>
+          <li><button class="dropdown-item" type="button"  onclick = "difficulty('Medium');">Medium</button></li>
+        </ul>
+      </div>
       <br>
       <table class="table">
         <thead>
@@ -179,7 +245,7 @@
             <th scope="col">Picture</th>
             <th scope="col">ID</th>
             <th scope="col">Title</th>
-            <th scope="col">Difficulty  Level</th>
+            <th scope="col">Difficulty</th>
             <th scope="col">Reciepts</th>
           </tr>
         </thead>
